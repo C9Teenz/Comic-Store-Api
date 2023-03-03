@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "comicId",
       });
       comic.hasMany(models.Cart, { foreignKey: "comicId", as: "comics" });
+      comic.hasOne(models.Detail_Transaction, { foreignKey: "comicId" });
     }
   }
   comic.init(
