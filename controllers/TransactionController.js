@@ -1,5 +1,6 @@
 const { Transaction, Detail_Transaction, comic } = require("../models");
 const { getUserByToken } = require("../helper/auth");
+const transaction = require("../models/transaction");
 class TransactionController {
   static async create(req, res) {
     const user = await getUserByToken(req);
@@ -48,6 +49,19 @@ class TransactionController {
       res.status(200).json(result);
     } catch (error) {
       res.status(500).json(error);
+    }
+  }
+  static async edit(req, res) {
+    const { id } = req.params;
+    const { isPayed } = req.body;
+    try {
+      const result = await Transaction.findByPk(id);
+      await result.update({ isPayed: isPayed });
+      result == 1
+        ? res.json({ message: `id ${id} has been updated` })
+        : res.json({ message: `id ${id} is not found` });
+    } catch (error) {
+      res.json(error);
     }
   }
 }
